@@ -1,0 +1,17 @@
+{
+  "mode": "multi",
+  "seed": 42,
+  "hands": {
+    "left": {"enabled": true, "translation": {"x": 0, "y": 0, "z": 0}, "rotation_degrees": {"x": 0, "y": 0, "z": 0}, "state": [0, 0, 0, 0, 0]},
+    "right": {"enabled": true, "translation": {"x": 0, "y": 0, "z": 0}, "rotation_degrees": {"x": 0, "y": 0, "z": 0}, "state": [0, 0, 0, 0, 0]}
+  },
+  "camera": {},
+  "light": {"rotation_degrees": {"x": 0, "y": 30}},
+  "render": {"resolution": [512, 512], "samples": 32},
+  "save_scene": false,
+  "samples": [
+    {},
+    {"hands": {"left": {"state": [4, 4, 4, 4, 4]}, "right": {"state": [4, 0, 0, 4, 4]}}},
+    {"hands": {"right": {"translation": {"x": 2}, "rotation_degrees": {"z": -10}}}}
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "mode": "multi",
+  "hands": {
+    "left": {
+      "enabled": true,
+      "translation": {"x": 0, "y": 0, "z": 0},
+      "rotation_degrees": {"x": 0, "y": 0, "z": 0},
+      "state": [0, 0, 0, 0, 0]
+    },
+    "right": {
+      "enabled": true,
+      "translation": {"x": 0, "y": 0, "z": 0},
+      "rotation_degrees": {"x": 0, "y": 0, "z": 0},
+      "state": [0, 0, 0, 0, 0]
+    }
+  },
+  "camera": {
+    "position": {"x": 7},
+    "rotation_degrees": {}
+  },
+  "light": {
+    "position": {},
+    "rotation_degrees": {"x": 0, "y": 30}
+  },
+  "render": {"resolution": [512, 512], "samples": 32},
+  "seed": 42
+}

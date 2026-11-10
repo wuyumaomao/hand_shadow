@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>手影实验台</title><link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="site-header"><div class="brand"><span class="brand-icon">◒</span><div><strong>手影实验台</strong><small>场景配置 · 规则生成</small></div></div><span id="connection" class="connection">正在连接 Blender 服务…</span></header>
+<main>
+  <section class="section-heading"><div><span class="step">01</span><h1>调整基础场景</h1><p>先看清影子，再开始实验。</p></div><div class="heading-actions"><button id="import-scene" class="button quiet">导入配置</button><button id="export-scene" class="button quiet">导出场景 JSON</button><input id="scene-file" type="file" accept=".json,application/json" hidden></div></section>
+  <div id="global-error" role="alert" class="error-banner" hidden></div>
+  <section class="scene-grid">
+    <div class="controls surface">
+      <div class="control-top"><label for="mode">场景模式</label><select id="mode"><option value="single">单手</option><option value="multi">双手（镜像）</option></select><button id="reset-scene" class="text-button">恢复基础设置</button></div>
+      <nav class="tabs" aria-label="配置对象"><button data-tab="hands" class="active" aria-selected="true">手部</button><button data-tab="camera" aria-selected="false">相机</button><button data-tab="light" aria-selected="false">日光</button></nav>
+      <form id="scene-form">
+        <div id="panel-hands" class="tab-panel">
+          <div class="hand-picker"><label for="hand-picker">控制对象</label><select id="hand-picker"><option value="left">原始手 A（骨架）</option><option value="right">镜像手 B（骨架.001）</option></select><label class="checkbox"><input type="checkbox" id="hand-enabled">参与渲染</label></div>
+          <p class="hint">A / B 是对象标识，不代表画面左右。当前相机下，A 的影子在右侧。</p>
+          <div id="hand-fields"></div>
+          <div class="field-heading"><h3>初始手势</h3><span>点击切换伸直 / 弯曲</span></div>
+          <div id="finger-buttons" class="finger-buttons"></div>
+          <div class="gesture-actions"><button type="button" id="open-hand" class="text-button">全部伸直</button><button type="button" id="close-hand" class="text-button">全部弯曲</button></div>
+        </div>
+        <div id="panel-camera" class="tab-panel" hidden><p class="object-label">Camera.001 <span>仅使用影子相机</span></p><div id="camera-fields"></div><p class="hint">位置与旋转是绝对世界坐标。相机不会自动朝向或跟随影子。</p></div>
+        <div id="panel-light" class="tab-panel" hidden><p class="object-label">日光 <span>Sun</span></p><div id="light-fields"></div><p class="hint">日光的方向由旋转决定，移动日光位置不会改变投影。</p></div>
+        <details class="render-settings"><summary>正式渲染设置</summary><div class="quality-fields"><label>宽度<input id="width" type="number" min="64" max="4096" step="1"></label><label>高度<input id="height" type="number" min="64" max="4096" step="1"></label><label>采样数<input id="samples" type="number" min="1" max="1024" step="1"></label></div><p class="hint">快速预览自动缩小并保持画幅比例，正式生成使用这里的设置。</p></details>
+      </form>
+    </div>
+    <div class="preview surface">
+      <div class="preview-top"><h2>影子预览</h2><span id="preview-badge" class="badge">等待预览</span></div>
+      <div class="preview-stage"><img id="preview-image" alt="当前基础场景的影子渲染预览" hidden><div id="preview-placeholder"><span>◒</span><p>正在准备第一次预览</p><small>修改左侧参数，影子会在这里更新</small></div><div id="preview-overlay" hidden><span class="spinner"></span><span id="preview-overlay-text">正在渲染…</span></div></div>
+      <div class="preview-toolbar"><label class="checkbox"><input type="checkbox" id="auto-preview" checked>自动预览</label><button id="refresh-preview" class="button quiet">更新预览</button></div>
+      <p id="preview-message" class="preview-message" role="status">停止修改约 1 秒后更新；每次渲染需要几秒。</p>
+      <div class="confirm-row"><button id="confirm-scene" class="button primary" disabled>确认基础场景</button><span id="confirmation" role="status">预览完成后可确认</span></div>
+      <div id="scene-result" class="result-links" hidden></div>
+    </div>
+  </section>
+  <section class="generation-section surface">
+    <div class="section-heading compact"><div><span class="step">02</span><h2>按规则生成输入输出对</h2><p>复用已确认的基础场景，只改变规则指定的内容。</p></div><button id="export-generation" class="button quiet">导出规则 JSON</button></div>
+    <div class="generation-options"><label>活动手<select id="active-hands"><option value="left">只改变原始手 A</option><option value="right">只改变镜像手 B</option><option value="both">两只手各自变化</option></select></label><label>随机种子<input id="seed" type="number" min="0" max="2147483647" step="1" value="42"></label><p class="hint">未选中的手保持初始姿态。数量保持按每只活动手分别计算。</p></div>
+    <div class="rule-table"><div class="rule-table-head"><span>变化规则</span><span>生成数量</span><span>遍历全部</span></div><div id="rule-rows"></div></div>
+    <div class="generation-bottom"><div><strong id="pair-estimate">预计生成 331 对</strong><p id="generate-hint">请先确认第一阶段的场景。</p></div><div class="generation-buttons"><button id="cancel-generation" class="button quiet" hidden>取消任务</button><button id="generate" class="button primary" disabled>生成输入输出对</button></div></div>
+    <div id="generation-progress" hidden><progress id="progress-bar" max="1" value="0"></progress><p id="progress-message" role="status"></p></div>
+    <div id="generation-result" class="generation-result" hidden></div>
+    <div id="pair-gallery" class="pair-gallery"></div>
+  </section>
+  <footer>本地运行 · Blender 实际渲染 · 每次实验独立保存图片与参数</footer>
+</main>
+<script src="/app.js" defer></script>
+</body>
+</html>

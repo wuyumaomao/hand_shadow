@@ -1,0 +1,45 @@
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Generated datasets, previews, jobs and test outputs
+outputs/
+tests/output*/
+tests/.cache/
+
+# Logs and local server files
+*.log
+*.err
+*.out
+server.log
+server.err
+
+# Blender temporary and backup files
+*.blend1
+*.blend2
+*.blend3
+*.blend4
+*.blend5
+*.tmp
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Local configuration and editor files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# OS temporary files
+*.swp
+*.swo
+*~

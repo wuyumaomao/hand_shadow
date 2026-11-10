@@ -1,0 +1,14 @@
+{
+  "active_hands": ["left"],
+  "seed": 42,
+  "rules": [
+    {"type": "count_preserve", "pair_count": 1},
+    {"type": "shift_one", "pair_count": 1},
+    {"type": "shift_two", "pair_count": 1},
+    {"type": "lighting_l1", "pair_count": 1},
+    {"type": "lighting_l2", "pair_count": 1},
+    {"type": "stretch", "pair_count": 1}
+  ],
+  "render": {"resolution": [256, 256], "samples": 8},
+  "pair_layout": {"gap": 24}
+}

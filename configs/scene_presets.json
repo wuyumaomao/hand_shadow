@@ -1,0 +1,136 @@
+{
+  "single": {
+    "mode": "single",
+    "hands": {
+      "left": {
+        "enabled": true,
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_degrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "state": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "seed": 42,
+    "render": {
+      "resolution": [
+        512,
+        512
+      ],
+      "samples": 32
+    },
+    "camera": {
+      "position": {
+        "x": 0,
+        "y": 27.546247482299805,
+        "z": 26.009618759155273
+      },
+      "rotation_degrees": {
+        "x": 184.83042407301608,
+        "y": 180.757281742614,
+        "z": -0.4218282409521827
+      }
+    },
+    "light": {
+      "position": {
+        "x": 0.0,
+        "y": -30.90530014038086,
+        "z": 30.0
+      },
+      "rotation_degrees": {
+        "x": 0,
+        "y": 30,
+        "z": -90.00000933466734
+      }
+    }
+  },
+  "multi": {
+    "mode": "multi",
+    "hands": {
+      "left": {
+        "enabled": true,
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_degrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "state": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "right": {
+        "enabled": true,
+        "translation": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "rotation_degrees": {
+          "x": 0,
+          "y": 0,
+          "z": 0
+        },
+        "state": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "seed": 42,
+    "render": {
+      "resolution": [
+        512,
+        512
+      ],
+      "samples": 32
+    },
+    "camera": {
+      "position": {
+        "x": 7,
+        "y": 27.546247482299805,
+        "z": 26.009618759155273
+      },
+      "rotation_degrees": {
+        "x": 184.83042407301608,
+        "y": 180.757281742614,
+        "z": -0.4218282409521827
+      }
+    },
+    "light": {
+      "position": {
+        "x": 0.0,
+        "y": -30.90530014038086,
+        "z": 30.0
+      },
+      "rotation_degrees": {
+        "x": 0,
+        "y": 30,
+        "z": -90.00000933466734
+      }
+    }
+  }
+}
