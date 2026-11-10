@@ -15,7 +15,7 @@
       <nav class="tabs" aria-label="配置对象"><button data-tab="hands" class="active" aria-selected="true">手部</button><button data-tab="camera" aria-selected="false">相机</button><button data-tab="light" aria-selected="false">日光</button></nav>
       <form id="scene-form">
         <div id="panel-hands" class="tab-panel">
-          <div class="hand-picker"><label for="hand-picker">控制对象</label><select id="hand-picker"><option value="left">原始手 A（骨架）</option><option value="right">镜像手 B（骨架.001）</option></select><label class="checkbox"><input type="checkbox" id="hand-enabled">参与渲染</label></div>
+          <div class="hand-picker"><label for="hand-picker">控制对象</label><select id="hand-picker"><option value="left">原始手 A（骨架）</option><option value="right">镜像手 B（骨架.001）</option><option value="both">双手同时调整</option></select><label class="checkbox" id="hand-enabled-wrap"><input type="checkbox" id="hand-enabled">参与渲染</label></div>
           <p class="hint">A / B 是对象标识，不代表画面左右。当前相机下，A 的影子在右侧。</p>
           <div id="hand-fields"></div>
           <div class="field-heading"><h3>初始手势</h3><span>点击切换伸直 / 弯曲</span></div>
@@ -38,7 +38,7 @@
   </section>
   <section class="generation-section surface">
     <div class="section-heading compact"><div><span class="step">02</span><h2>按规则生成输入输出对</h2><p>复用已确认的基础场景，只改变规则指定的内容。</p></div><button id="export-generation" class="button quiet">导出规则 JSON</button></div>
-    <div class="generation-options"><label>活动手<select id="active-hands"><option value="left">只改变原始手 A</option><option value="right">只改变镜像手 B</option><option value="both">两只手各自变化</option></select></label><label>随机种子<input id="seed" type="number" min="0" max="2147483647" step="1" value="42"></label><p class="hint">未选中的手保持初始姿态。数量保持按每只活动手分别计算。</p></div>
+    <div class="generation-options"><label>活动手<select id="active-hands"><option value="left">只改变原始手 A</option><option value="right">只改变镜像手 B</option><option value="both">双手作为整体变化</option></select></label><label>随机种子<input id="seed" type="number" min="0" max="2147483647" step="1" value="42"></label><p class="hint">双手规则把左右手组成长度 10 的数组后统一计算。</p></div>
     <div class="rule-table"><div class="rule-table-head"><span>变化规则</span><span>生成数量</span><span>遍历全部</span></div><div id="rule-rows"></div></div>
     <div class="generation-bottom"><div><strong id="pair-estimate">预计生成 331 对</strong><p id="generate-hint">请先确认第一阶段的场景。</p></div><div class="generation-buttons"><button id="cancel-generation" class="button quiet" hidden>取消任务</button><button id="generate" class="button primary" disabled>生成输入输出对</button></div></div>
     <div id="generation-progress" hidden><progress id="progress-bar" max="1" value="0"></progress><p id="progress-message" role="status"></p></div>

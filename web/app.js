@@ -61,14 +61,16 @@ function vector(container, title, path, unit) {
     });
     wrap.append(name, input); axes.append(wrap);
   }
-  group.append(axes); $(container).append(group);
+  group.append(axes); (typeof container === 'string' ? $(container) : container).append(group);
 }
-function renderHand() {
-  const hand = $('hand-picker').value, config = scene.hands[hand];
-  $('hand-fields').replaceChildren(); $('finger-buttons').replaceChildren();
-  $('hand-enabled').checked = config.enabled !== false;
-  vector('hand-fields', '整体位置偏移', `hands.${hand}.translation`, '世界坐标 · 场景长度单位');
-  vector('hand-fields', '整体旋转偏移', `hands.${hand}.rotation_degrees`, '世界轴 · 度');
+function renderOneHand(hand, fields, fingers, enabledTarget) {
+  const config = scene.hands[hand];
+  if (enabledTarget) {
+    enabledTarget.checked = config.enabled !== false;
+    enabledTarget.addEventListener('change', () => { config.enabled = enabledTarget.checked; updateActiveHands(); changed(); });
+  }
+  vector(fields, '整体位置偏移', `hands.${hand}.translation`, '世界坐标 · 场景长度单位');
+  vector(fields, '整体旋转偏移', `hands.${hand}.rotation_degrees`, '世界轴 · 度');
   ['拇指', '食指', '中指', '无名指', '小指'].forEach((name, index) => {
     const button = document.createElement('button'); button.type = 'button';
     const bent = config.state[index] === 4;
@@ -78,12 +80,34 @@ function renderHand() {
     button.textContent = name;
     const small = document.createElement('small'); small.textContent = bent ? '弯曲' : '伸直';
     button.append(small); button.addEventListener('click', () => { config.state[index] = bent ? 0 : 4; renderHand(); changed(); });
-    $('finger-buttons').append(button);
+    fingers.append(button);
   });
+}
+function renderHand() {
+  const selected = $('hand-picker').value;
+  $('hand-fields').replaceChildren(); $('finger-buttons').replaceChildren();
+  $('hand-enabled-wrap').hidden = selected === 'both';
+  if (selected !== 'both') {
+    renderOneHand(selected, $('hand-fields'), $('finger-buttons'), $('hand-enabled'));
+    return;
+  }
+  for (const hand of ['left', 'right']) {
+    const section = document.createElement('section'); section.className = 'both-hand-section';
+    const heading = document.createElement('div'); heading.className = 'both-hand-heading';
+    const title = document.createElement('strong'); title.textContent = hand === 'left' ? '原始手 A' : '镜像手 B';
+    const label = document.createElement('label'); label.className = 'checkbox';
+    const enabled = document.createElement('input'); enabled.type = 'checkbox'; enabled.checked = scene.hands[hand].enabled !== false;
+    label.append(enabled, document.createTextNode('参与渲染')); heading.append(title, label); section.append(heading);
+    const fields = document.createElement('div'); const fingers = document.createElement('div'); fingers.className = 'finger-buttons';
+    renderOneHand(hand, fields, fingers, enabled); section.append(fields);
+    const fingerTitle = document.createElement('div'); fingerTitle.className = 'field-heading'; fingerTitle.innerHTML = '<h3>初始手势</h3><span>点击切换伸直 / 弯曲</span>';
+    section.append(fingerTitle, fingers); $('hand-fields').append(section);
+  }
 }
 function renderForm() {
   $('mode').value = scene.mode;
   $('hand-picker').querySelector('[value=right]').hidden = scene.mode === 'single';
+  $('hand-picker').querySelector('[value=both]').hidden = scene.mode === 'single';
   if (scene.mode === 'single') $('hand-picker').value = 'left';
   renderHand();
   $('camera-fields').replaceChildren(); $('light-fields').replaceChildren();
@@ -277,7 +301,7 @@ function bind() {
   $('mode').addEventListener('change', () => { scene = clone(presets[$('mode').value]); renderForm(); changed(); });
   $('reset-scene').addEventListener('click', () => { scene = clone(presets[scene.mode]); renderForm(); changed(); });
   $('hand-picker').addEventListener('change', renderHand);
-  $('hand-enabled').addEventListener('change', () => { scene.hands[$('hand-picker').value].enabled = $('hand-enabled').checked; updateActiveHands(); changed(); });
+  $('hand-enabled').addEventListener('change', () => { const hand = $('hand-picker').value; if (hand !== 'both') { scene.hands[hand].enabled = $('hand-enabled').checked; updateActiveHands(); changed(); } });
   for (const [id, state] of [['open-hand', 0], ['close-hand', 4]]) $(id).addEventListener('click', () => { scene.hands[$('hand-picker').value].state = Array(5).fill(state); renderHand(); changed(); });
   for (const id of ['width', 'height', 'samples']) $(id).addEventListener('input', () => {
     scene.render = {resolution: [$('width').valueAsNumber, $('height').valueAsNumber], samples: $('samples').valueAsNumber}; changed();
